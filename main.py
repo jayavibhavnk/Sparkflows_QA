@@ -50,6 +50,18 @@ def query_from_doc(text):
     chat_history = [(text, result["answer"])]
     return result["answer"]
 
+def query_with_link(query):
+    new_db = db.similarity_search(query)
+    relevant_links = [i.metadata['source'] for i in new_db]
+    rel_links = []
+    for i in relevant_links:
+        if i not in rel_links:
+            rel_links.append(i)
+    links = '\n'.join(rel_links)
+    response_from_chatgpt = query_from_doc(query)
+    final_response = response_from_chatgpt + "\n\nHere are some of the relevant links from The Huggies Website \n" +links
+
+    return final_response
 
 if 1:
 
@@ -69,7 +81,7 @@ if 1:
     if st.session_state.messages[-1]["role"] != "assistant":
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                msg = query_from_doc(prompt)
+                msg = query_with_link(prompt)
                 st.write(msg)
                 message = {"role": "assistant", "content": msg}
                 st.session_state.messages.append(message) 
