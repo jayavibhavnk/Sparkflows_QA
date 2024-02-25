@@ -56,7 +56,7 @@ def query_with_link(query):
     rel_links = []
     for i in relevant_links:
         if i not in rel_links:
-            rel_links.append(i)
+            rel_links.append(i + "\n")
     links = '\n'.join(rel_links)
     response_from_chatgpt = query_from_doc(query)
     final_response = response_from_chatgpt + "\n\nHere are some of the relevant links from The Huggies Website \n" +links
