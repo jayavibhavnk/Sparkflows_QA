@@ -64,7 +64,7 @@ def get_prompt():
         )
     human_message = HumanMessagePromptTemplate.from_template("{question}")
 
-    return system_prompt, human_message
+    return system_message, human_message
 
 def query_from_doc1(text):
     global chat_history
