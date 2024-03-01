@@ -18,7 +18,7 @@ st.subheader(
 
 db = None
 
-chat_history = []
+st.session_state.chat_history = []
 
 llm = ChatOpenAI(
         openai_api_key = OPENAI_API_KEY,
