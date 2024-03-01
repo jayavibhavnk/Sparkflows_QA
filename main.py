@@ -57,7 +57,7 @@ def query_from_doc(text):
     global chat_history
     qa = ChatVectorDBChain.from_llm(llm, db)
     prompt_template = "You are a helpful assisstant"
-    result = qa({"question":prompt_template+ text, "chat_history": st.session_state.chat_history})
+    result = qa({"question":get_prompt() + text, "chat_history": st.session_state.chat_history})
     # print(result["answer"])
     st.session_state.chat_history = [(text, result["answer"])]
     return result["answer"]
