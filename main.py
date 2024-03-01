@@ -4,10 +4,18 @@ import streamlit as st
 from langchain.chains import ChatVectorDBChain
 from langchain.chat_models import ChatOpenAI
 from langchain.vectorstores import FAISS
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import PyPDFLoader, DirectoryLoader
-from langchain.embeddings import HuggingFaceEmbeddings
+# from langchain.text_splitter import RecursiveCharacterTextSplitter
+# from langchain.document_loaders import PyPDFLoader, DirectoryLoader
+# from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.embeddings.openai import OpenAIEmbeddings
+
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationalRetrievalChain
+from langchain.prompts import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    SystemMessagePromptTemplate,
+)
 
 OPENAI_API_KEY = st.secrets.OPENAI_API_KEY
 
@@ -42,28 +50,54 @@ def query_faiss(query):
     # return ans.page_content
 
 def get_prompt():
-    prompt_template = """
-    You are an expert support agent at Sparkflows
-
-        Your task is to answer customer queries related to sparkflows. If you don't know any answer, don't try to make up an answer. Just say that you don't know and to contact the company support.
-
-        Don't be overconfident and don't hallucinate. Ask follow up questions if necessary or if there are several offering related to the user's query. Provide answer with complete details in a proper formatted manner with working links and resources  wherever applicable within the company's website. Never provide wrong links.
-
-        if you are asked installation of sparkflows, you will give users all the options possible and ask them which platform they would like to install the product on 
-        if the user asks installation of sparkflows on a specific platform, you will give the detailed guide on how to do it 
-            
-        And do not say "from the information provided"
-
+    system_message = SystemMessagePromptTemplate.from_template(
     """
+    You are a chatbot tasked with responding to questions about the documentation of the LangChain library and project.
 
-def query_from_doc(text):
+    You should never answer a question with a question, and you should always respond with the most relevant documentation page.
+
+    Do not answer questions that are not about the LangChain library or project.
+
+    Given a question, you should respond with the most relevant documentation page by following the relevant context below:\n
+    {context}
+    """
+        )
+    human_message = HumanMessagePromptTemplate.from_template("{question}")
+
+    return system_prompt, human_message
+
+def query_from_doc1(text):
     global chat_history
     qa = ChatVectorDBChain.from_llm(llm, db)
     prompt_template = "You are a helpful assisstant"
-    result = qa({"question":get_prompt() + text, "chat_history": st.session_state.chat_history})
+    result = qa({"question": get_prompt() + text, "chat_history": st.session_state.chat_history})
     # print(result["answer"])
     st.session_state.chat_history = [(text, result["answer"])]
     return result["answer"]
+
+def query_from_doc(text):
+    llm = ChatOpenAI(model="gpt-4") 
+
+    system_message, human_message = get_prompt()
+    
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    conversation_chain = ConversationalRetrievalChain.from_llm(
+        llm=llm,
+        retriever=db.as_retriever(),
+        memory=memory,
+        combine_docs_chain_kwargs={
+            "prompt": ChatPromptTemplate.from_messages(
+                [
+                    system_message,
+                    human_message,
+                ]
+            ),
+        },
+    )
+
+    ans = conversation_chain(text)
+
+    return ans['answer']
 
 def query_with_link(query):
     new_db = db.similarity_search(query)
@@ -78,9 +112,15 @@ def query_with_link(query):
 
     return final_response
 
-if 1:
+def main():
 
     load_faiss_embeddings("db_faiss")
+    
+    if "conversation" not in st.session_state:
+        st.session_state.conversation = None
+        
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = None
 
     if "messages" not in st.session_state.keys(): # Initialize the chat messages history
         st.session_state.messages = [{"role": "assistant", "content": "Ask me anything about Sparkflows"}]
@@ -100,3 +140,7 @@ if 1:
                 st.write(msg)
                 message = {"role": "assistant", "content": msg}
                 st.session_state.messages.append(message) 
+
+
+if __name__ == "__main__":
+    main()
