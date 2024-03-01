@@ -100,7 +100,7 @@ def query_from_doc(text):
 
     # return response['chat_history'] 
 
-    return session_state.chat_history
+    return st.session_state.chat_history
 
 def query_with_link(query):
     new_db = db.similarity_search(query)
