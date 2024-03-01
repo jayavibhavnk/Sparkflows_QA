@@ -149,7 +149,7 @@ def main():
     load_faiss_embeddings("db_faiss")
 
     if "chat_history" not in st.session_state:
-        st.session_state.chat_history = None
+        st.session_state.chat_history = []
     
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
