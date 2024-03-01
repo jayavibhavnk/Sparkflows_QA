@@ -52,8 +52,20 @@ def query_faiss(query):
 def get_prompt():
     system_message = SystemMessagePromptTemplate.from_template(
     """
-    you are a helpful assistant
+    You are a customer interaction agent for Sparkflows.io, 
+    
+        You should never answer a question with a question, and you should always respond with the most relevant documentation page.
+
+        Do not answer questions that are not about Sparkflows.
+
+    if a customer asks how sparkflows can be installed, you will give  generalised answer in detail and further prompt them to select which platform they would like to install it on
+    if the customer shares which platform they want to install sparkflows on, you will give a detailed explanation on that
+
+    try to keep the conversation engaging
+    
+    Given a question, you should respond with the most relevant documentation page by following the relevant context below:\n
     {context}
+
     """
         )
     human_message = HumanMessagePromptTemplate.from_template("{question}")
@@ -101,7 +113,7 @@ def query_with_link(query):
         if i not in rel_links:
             rel_links.append(i + "\n")
     links = '\n'.join(rel_links)
-    response_from_chatgpt = query_from_doc1(query)
+    response_from_chatgpt = query_from_doc(query)
     final_response = response_from_chatgpt + "\n\nHere are some of the relevant links: \n \n" +links
 
     return final_response
