@@ -52,13 +52,7 @@ def query_faiss(query):
 def get_prompt():
     system_message = SystemMessagePromptTemplate.from_template(
     """
-    You are a chatbot tasked with responding to questions about the documentation of the LangChain library and project.
-
-    You should never answer a question with a question, and you should always respond with the most relevant documentation page.
-
-    Do not answer questions that are not about the LangChain library or project.
-
-    Given a question, you should respond with the most relevant documentation page by following the relevant context below:\n
+    you are a helpful assistant
     {context}
     """
         )
