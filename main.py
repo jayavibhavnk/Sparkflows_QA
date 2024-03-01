@@ -20,7 +20,7 @@ from langchain.prompts import (
 def load_faiss_embeddings(path):
     global db
     embeddings = OpenAIEmbeddings(
-        openai_api_key=OPENAI_API_KEY
+        openai_api_key=st.secrets.OPENAI_API_KEY
         )
     db = FAISS.load_local('db_faiss', embeddings)
 
