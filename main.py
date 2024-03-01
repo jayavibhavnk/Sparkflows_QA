@@ -58,10 +58,12 @@ def get_prompt():
 
         Do not answer questions that are not about Sparkflows.
 
-    if a customer asks how sparkflows can be installed, you will give the user all options to install it and a generalised answer(do not just explain about one way) in detail and further prompt them to select which platform they would like to install it on
+    if a customer asks how sparkflows can be installed, you will give the user all options to install it and further prompt them to select which platform they would like to install it on
     if the customer shares which platform they want to install sparkflows on, you will give a detailed explanation on that
 
     do not hallucinate and make up content, you will strictly follow what is givn to you, do not make up links on your own 
+
+    do not make up fake links for documentation
 
     try to keep the conversation engaging
     
