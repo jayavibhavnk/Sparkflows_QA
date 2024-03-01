@@ -17,23 +17,6 @@ from langchain.prompts import (
     SystemMessagePromptTemplate,
 )
 
-OPENAI_API_KEY = st.secrets.OPENAI_API_KEY
-
-st.title("Sparkflows Documentation")
-st.subheader(
-    "Ask anything about the sparkflows documentation",
-)
-
-db = None
-
-st.session_state.chat_history = []
-
-llm = ChatOpenAI(
-        openai_api_key = OPENAI_API_KEY,
-        model_name='gpt-4-0125-preview',
-        temperature=0.8
-    )
-
 def load_faiss_embeddings(path):
     global db
     embeddings = OpenAIEmbeddings(
@@ -120,6 +103,21 @@ def query_with_link(query):
 
 def main():
 
+    OPENAI_API_KEY = st.secrets.OPENAI_API_KEY
+
+    st.title("Sparkflows Documentation")
+    st.subheader(
+        "Ask anything about the sparkflows documentation",
+    )
+    
+    db = None
+    
+    llm = ChatOpenAI(
+            openai_api_key = OPENAI_API_KEY,
+            model_name='gpt-4-0125-preview',
+            temperature=0.8
+        )
+    
     load_faiss_embeddings("db_faiss")
     
     if "conversation" not in st.session_state:
