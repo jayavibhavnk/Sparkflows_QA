@@ -22,7 +22,9 @@ def load_faiss_embeddings(path):
     embeddings = OpenAIEmbeddings(
         openai_api_key=st.secrets.OPENAI_API_KEY
         )
-    db = FAISS.load_local('db_faiss', embeddings)
+    db = FAISS.load_local('db_faiss', embeddings)    
+
+    st.session_state.vector_store = db
 
     print("db loaded")
 
@@ -138,7 +140,7 @@ def main():
         st.session_state.conversation = None
 
     if "vector_store" not in st.session_state:
-        st.session_state.vector_store = db
+        st.session_state.vector_store = None
 
     st.title("Sparkflows Documentation")
     st.subheader(
