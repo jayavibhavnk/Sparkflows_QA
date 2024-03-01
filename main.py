@@ -96,11 +96,6 @@ def query_with_link(query):
 def main():
 
     OPENAI_API_KEY = st.secrets.OPENAI_API_KEY
-
-    st.title("Sparkflows Documentation")
-    st.subheader(
-        "Ask anything about the sparkflows documentation",
-    )
     
     db = None
     
@@ -120,6 +115,11 @@ def main():
 
     if "vector_store" not in st.session_state:
         st.session_state.vector_store = db
+
+    st.title("Sparkflows Documentation")
+    st.subheader(
+        "Ask anything about the sparkflows documentation",
+    )
     
     if "messages" not in st.session_state.keys(): # Initialize the chat messages history
         st.session_state.messages = [{"role": "assistant", "content": "Ask me anything about Sparkflows"}]
