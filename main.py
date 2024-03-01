@@ -53,8 +53,6 @@ def get_prompt():
     system_message = SystemMessagePromptTemplate.from_template(
     """
     You are a customer interaction agent for Sparkflows.io, 
-    
-        You should never answer a question with a question, and you should always respond with the most relevant documentation page.
 
         Do not answer questions that are not about Sparkflows.
 
