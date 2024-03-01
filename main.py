@@ -54,7 +54,7 @@ def query_from_doc1(text):
     st.session_state.chat_history = [(text, result["answer"])]
     return result["answer"]
 
-def query_from_doc(text):
+def query_from_doc2(text):
     llm = ChatOpenAI(model="gpt-4") 
 
     system_message, human_message = get_prompt()
@@ -80,6 +80,12 @@ def query_from_doc(text):
     
     return ans['chat_history']
 
+def query_from_doc(text):
+    response = st.session_state.conversation({"question": text})
+    st.session_state.chat_history = response["chat_history"]
+
+    return response['answer'] 
+
 def query_with_link(query):
     new_db = db.similarity_search(query)
     relevant_links = [i.metadata['source'] for i in new_db]
@@ -92,6 +98,24 @@ def query_with_link(query):
     final_response = response_from_chatgpt #+ "\n\nHere are some of the relevant links: \n \n" +links
 
     return final_response
+
+def get_conversation_chain(vector_store:FAISS, system_message:str, human_message:str) -> ConversationalRetrievalChain:
+    llm = ChatOpenAI(model="gpt-4")
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    conversation_chain = ConversationalRetrievalChain.from_llm(
+        llm=llm,
+        retriever=vector_store.as_retriever(),
+        memory=memory,
+        combine_docs_chain_kwargs={
+            "prompt": ChatPromptTemplate.from_messages(
+                [
+                    system_message,
+                    human_message,
+                ]
+            ),
+        },
+    )
+    return conversation_chain
 
 def main():
 
@@ -140,6 +164,9 @@ def main():
                 message = {"role": "assistant", "content": msg}
                 st.session_state.messages.append(message) 
 
+    st.session_state.conversation = get_conversation_chain(
+    st.session_state.vector_store, system_message_prompt, human_message_prompt
+        )
 
 if __name__ == "__main__":
     main()
