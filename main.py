@@ -52,7 +52,7 @@ def get_prompt():
 
 
     
-    Given a question, you should respond with the most relevant documentation page by following the relevant context below and also return relevant links from this:\n
+    Given a question, you should respond with the most relevant documentation page by following the relevant context below:\n
     {context}
 
     """
