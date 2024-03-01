@@ -49,9 +49,8 @@ def get_prompt():
 
         Don't be overconfident and don't hallucinate. Ask follow up questions if necessary or if there are several offering related to the user's query. Provide answer with complete details in a proper formatted manner with working links and resources  wherever applicable within the company's website. Never provide wrong links.
 
-        One of the major queries from the user will be: how do i install sparkflows 
-        since sparkflows can be installed on several platforms you will not give a generalised answer and then prompt the user and ask them what platform do they want to run the product on 
-        when a specific platform is given, you will provide a detailed instruction on how to install it
+        And do not say "from the information provided"
+
     """
 
 def query_from_doc(text):
