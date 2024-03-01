@@ -22,8 +22,8 @@ db = None
 
 llm = ChatOpenAI(
         openai_api_key = OPENAI_API_KEY,
-        model_name='gpt-3.5-turbo',
-        temperature=0.0
+        model_name='gpt-4-0125-preview',
+        temperature=0.8
     )
 
 def load_faiss_embeddings(path):
