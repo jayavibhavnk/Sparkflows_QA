@@ -116,6 +116,9 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
+    if "vector_store" not in st.session_state:
+        st.session_state.vector_store = db
+    
     if "messages" not in st.session_state.keys(): # Initialize the chat messages history
         st.session_state.messages = [{"role": "assistant", "content": "Ask me anything about Sparkflows"}]
 
