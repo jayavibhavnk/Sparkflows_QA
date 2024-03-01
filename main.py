@@ -17,9 +17,6 @@ from langchain.prompts import (
     SystemMessagePromptTemplate,
 )
 
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = None
-
 def load_faiss_embeddings(path):
     global db
     embeddings = OpenAIEmbeddings(
@@ -79,7 +76,7 @@ def query_from_doc(text):
     
     ans = conversation_chain(text)
 
-    st.session_state.chat_history = ans["chat_history"]
+    st.session_state.chat_history.append = ans["chat_history"]
     
     return ans['chat_history']
 
@@ -109,6 +106,9 @@ def main():
         )
     
     load_faiss_embeddings("db_faiss")
+
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = None
     
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
