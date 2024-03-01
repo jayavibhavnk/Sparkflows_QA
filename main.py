@@ -73,9 +73,11 @@ def query_from_doc(text):
             ),
         },
     )
-
+    
     ans = conversation_chain(text)
 
+     st.session_state.chat_history = ans["chat_history"]
+    
     return ans['answer']
 
 def query_with_link(query):
