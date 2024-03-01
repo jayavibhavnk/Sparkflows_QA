@@ -49,8 +49,10 @@ def get_prompt():
     Don't be overconfident and don't hallucinate. Ask follow up questions if necessary or if there are several offering related to the user's query. Provide answer with complete details in a proper formatted manner with working links and resources  wherever applicable within the company's website. Never provide wrong links.
 
     try to keep the conversation engaging
+
+
     
-    Given a question, you should respond with the most relevant documentation page by following the relevant context below:\n
+    Given a question, you should respond with the most relevant documentation page by following the relevant context below and also return relevant links from this:\n
     {context}
 
     """
