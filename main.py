@@ -98,7 +98,7 @@ def query_from_doc(text):
     response = st.session_state.conversation({"question": text})
     st.session_state.chat_history = response["chat_history"]
 
-    return response['answer'] 
+    return response['chat_history'] 
 
 def query_with_link(query):
     new_db = db.similarity_search(query)
