@@ -83,11 +83,7 @@ def query_from_doc2(text):
 
 def query_from_doc(text):
     response = st.session_state.conversation({"question": text, "chat_history": st.session_state.chat_history})
-    # st.session_state.chat_history.append(response["chat_history"][0])
-    # st.session_state.chat_history.append(response["chat_history"][1])
-    # # st.session_state.chat_history.append("yo")
     st.state_session.chat_history = response['chat_history']
-    # return response['chat_history'] 
     return response['answer']
 
 def query_with_link(query):
