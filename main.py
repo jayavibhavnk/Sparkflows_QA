@@ -166,9 +166,9 @@ def main():
                 message = {"role": "assistant", "content": msg}
                 st.session_state.messages.append(message) 
 
-    st.session_state.conversation = get_conversation_chain(
-    st.session_state.vector_store, system_message_prompt, human_message_prompt
-        )
+    system_message_prompt, human_message_prompt = get_prompt()
+    
+    st.session_state.conversation = get_conversation_chain(st.session_state.vector_store, system_message_prompt, human_message_prompt)
 
 if __name__ == "__main__":
     main()
