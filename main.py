@@ -49,6 +49,9 @@ def get_prompt():
 
         Don't be overconfident and don't hallucinate. Ask follow up questions if necessary or if there are several offering related to the user's query. Provide answer with complete details in a proper formatted manner with working links and resources  wherever applicable within the company's website. Never provide wrong links.
 
+        if you are asked installation of sparkflows, you will give users all the options possible and ask them which platform they would like to install the product on 
+        if the user asks installation of sparkflows on a specific platform, you will give the detailed guide on how to do it 
+            
         And do not say "from the information provided"
 
     """
