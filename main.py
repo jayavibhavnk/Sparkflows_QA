@@ -88,7 +88,6 @@ def query_from_doc(text):
     # st.session_state.chat_history.append("yo")
     # st.state_session.chat_history = response['chat_history']
     # return response['chat_history'] 
-    st.session_state.conversation['chat_history'] = st.session_state.chat_history
     return st.session_state.conversation
 
 def query_with_link(query):
@@ -100,11 +99,11 @@ def query_with_link(query):
             rel_links.append(i + "\n")
     links = '\n'.join(rel_links)
     response_from_chatgpt = query_from_doc(query)
-    final_response = response_from_chatgpt #+ "\n\nHere are some of the relevant links: \n \n" +links
+    final_response = response_from_chatgpt + "\n\nHere are some of the relevant links: \n \n" +links
 
     return final_response
 
-def get_conversation_chain(vector_store:FAISS, system_message:str, human_message:str) -> ConversationalRetrievalChain:
+def get_conversation_chain(vector_store:FAISS, system_message:str, human_message:str) -> ConversationalRetrievalChai:
     llm = ChatOpenAI(model="gpt-4")
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
