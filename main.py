@@ -61,6 +61,8 @@ def get_prompt():
     if a customer asks how sparkflows can be installed, you will give the user all options to install it and further prompt them to select which platform they would like to install it on
     if the customer shares which platform they want to install sparkflows on, you will give a detailed explanation on that
 
+        DO NOT MAKE UP FAKE LINKS FOR DOCUMENTATION OR FOR ANY OTHER SOURCE, IF YOU DO NOT KNOW THE LINK JUST DONT ADD IT IN THE ANSWER
+
     do not hallucinate and make up content, you will strictly follow what is givn to you, do not make up links on your own 
 
     do not make up fake links for documentation
