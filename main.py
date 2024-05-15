@@ -22,7 +22,7 @@ def load_faiss_embeddings(path):
     embeddings = OpenAIEmbeddings(
         openai_api_key=st.secrets.OPENAI_API_KEY
         )
-    db = FAISS.load_local('db_faiss', embeddings)    
+    db = FAISS.load_local('db_faiss', embeddings, allow_dangerous_deserialization = True)    
 
     st.session_state.vector_store = db
 
