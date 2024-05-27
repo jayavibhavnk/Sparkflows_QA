@@ -104,21 +104,19 @@ def main():
     if prompt := st.chat_input("Your question"):
         st.session_state.messages.append({"role": "user", "content": prompt})
 
-        # Generate a response if the last message is from the user
-        if st.session_state.messages[-1]["role"] == "user":
-            with st.chat_message("assistant"):
-                with st.spinner("Thinking..."):
-                    msg = query_with_link(prompt)
-                    st.write(msg)
-                    message = {"role": "assistant", "content": msg}
-                    st.session_state.messages.append(message)
-                    # Update chat history to maintain conversation state
-                    st.session_state.chat_history.append({"role": "user", "content": prompt})
-                    st.session_state.chat_history.append({"role": "assistant", "content": msg})
-
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.write(message["content"])
+
+    if st.session_state.messages[-1]["role"] != "assistant":
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                msg = query_with_link(prompt)
+                st.write(msg)
+                message = {"role": "assistant", "content": msg}
+                st.session_state.messages.append(message)
+                # Update chat history to maintain conversation state
+                st.session_state.chat_history.append((prompt, msg))
 
 if __name__ == "__main__":
     main()
