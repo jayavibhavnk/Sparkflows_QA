@@ -13,7 +13,7 @@ from langchain.prompts import (
 
 def load_faiss_embeddings(path):
     embeddings = OpenAIEmbeddings(openai_api_key=st.secrets.OPENAI_API_KEY)
-    db = FAISS.load_local('db_faiss', embeddings, allow_dangerous_deserialization=True)
+    db = FAISS.load_local(path, embeddings, allow_dangerous_deserialization=True)
     st.session_state.vector_store = db
     print("db loaded")
 
@@ -77,6 +77,7 @@ def query_from_doc(text):
     return response['answer']
 
 def main():
+    # Initialize session state variables
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
@@ -86,30 +87,27 @@ def main():
     if "vector_store" not in st.session_state:
         st.session_state.vector_store = None
 
+    if "messages" not in st.session_state:
+        st.session_state.messages = [{"role": "assistant", "content": "Ask me anything about Sparkflows"}]
+
     st.title("Sparkflows Documentation")
     st.subheader("Ask anything about the Sparkflows documentation")
 
-    if "messages" not in st.session_state: # Initialize the chat messages history
-        st.session_state.messages = [{"role": "assistant", "content": "Ask me anything about Sparkflows"}]
-
-    if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
+    if prompt := st.chat_input("Your question"):
         st.session_state.messages.append({"role": "user", "content": prompt})
 
-    for message in st.session_state.messages: # Display the prior chat messages
+    for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.write(message["content"])
 
-    # Load FAISS embeddings if not already loaded
     if st.session_state.vector_store is None:
         load_faiss_embeddings("db_faiss")
 
     system_message_prompt, human_message_prompt = get_prompt()
 
-    # Initialize the conversation chain if not already initialized
     if st.session_state.conversation is None:
         st.session_state.conversation = get_conversation_chain(st.session_state.vector_store, system_message_prompt, human_message_prompt)
 
-    # If the last message is not from the assistant, generate a new response
     if st.session_state.messages[-1]["role"] != "assistant":
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
