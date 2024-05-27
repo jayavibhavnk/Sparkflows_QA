@@ -145,10 +145,3 @@ Invoke the RAG chain with a user query.
 rag_chain.invoke("What the president say about Ketanji Brown Jackson?")
 ```
 
-## Conclusion
-
-By following these steps, you can build a powerful RAG application that augments the knowledge of LLMs with specific, relevant data. This approach ensures that your AI can provide accurate and up-to-date answers even when dealing with private or newly introduced information.
-
----
-
-I hope this comprehensive guide helps you set up your own RAG application using Langchain. If you have any questions or need further assistance, feel free to reach out!
