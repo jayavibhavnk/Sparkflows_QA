@@ -93,13 +93,6 @@ def main():
     st.title("Sparkflows Documentation")
     st.subheader("Ask anything about the Sparkflows documentation")
 
-    if prompt := st.chat_input("Your question"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-
     if st.session_state.vector_store is None:
         load_faiss_embeddings("db_faiss")
 
@@ -108,6 +101,13 @@ def main():
     if st.session_state.conversation is None:
         st.session_state.conversation = get_conversation_chain(st.session_state.vector_store, system_message_prompt, human_message_prompt)
 
+    if prompt := st.chat_input("Your question"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+
     if st.session_state.messages[-1]["role"] != "assistant":
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
@@ -115,6 +115,8 @@ def main():
                 st.write(msg)
                 message = {"role": "assistant", "content": msg}
                 st.session_state.messages.append(message)
+                # Update chat history to maintain conversation state
+                st.session_state.chat_history.append((prompt, msg))
 
 if __name__ == "__main__":
     main()
