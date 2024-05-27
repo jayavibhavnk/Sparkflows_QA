@@ -6,6 +6,8 @@ Retrieval Augmented Generation (RAG) is a powerful technique for enhancing the c
 
 RAG stands for Retrieval Augmented Generation. It combines the reasoning ability of LLMs with the specific data needed to answer a query accurately. LLMs, while powerful, have a knowledge cut-off date and cannot reason about data introduced after this point or private data. RAG addresses this by retrieving relevant information at runtime and feeding it into the LLM.
 
+![RAG Workflow](https://truera.com/wp-content/uploads/2023/09/truera-architecture-for-chatot-figure-1-1024x561.png)
+
 ## Setting Up the Python Environment
 
 To create a RAG application, you'll need the following:
